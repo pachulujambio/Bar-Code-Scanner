@@ -15,7 +15,7 @@ Aplicación móvil, desarrollada en Java mediante Android studio, en la cual cre
 + PDF417
 + QR
   
- y con el mismo realizamos una consulta a un webService.
+ y con el mismo realizamos una consulta a un webService determinado.
 
 ## Dependencias Necesarias
 Dentro del archivo ```build.gradle```, el cual encontramos en ```Grandle Scripts``` es necesario incluir las dependencia de Volley Android, zxing y sincronizar la aplicación.

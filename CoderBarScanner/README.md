@@ -147,9 +147,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```java
 
 private void getData(String scanResult){
-    String user = "wl-development";
-    String pass = "f83J7W5dt4Km";
-    String url = "https://kong.wiener-lab.com/wlm-plin/barcode_info?barcode=" + scanResult ;
+    String user = "User";
+    String pass = "Pass";
+    String url = "https://test + scanResult ;
 }
 
 ```

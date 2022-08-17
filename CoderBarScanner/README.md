@@ -138,9 +138,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 ## Metodo ```getData(String scanResult)```:
 
-#### El siguiente metodo recibe el resultado del codigo escaneado con el que vamos a realizar la consulta al web service mediante la libreria "Volley" de Andorid Studio.
+ El siguiente metodo recibe el resultado del codigo escaneado con el que vamos a realizar la consulta al web service mediante la libreria "Volley" de Andorid Studio.
 
-#### En primer lugar vamos a instanciar tanto las credenciales del usuario como la url que vamos a consultar, la cual armamos con el resultado del escaner.
+ En primer lugar vamos a instanciar tanto las credenciales del usuario como la url que vamos a consultar, la cual armamos con el resultado del escaner.
 
 
 
@@ -153,7 +153,7 @@ private void getData(String scanResult){
 }
 
 ```
-#### En este caso el web service necesitara una autorizacion, para esto se pondra el header "Authorization", en donde las credenciales se codifican en Base64, en la llamada HTTP.
+ En este caso el web service necesitara una autorizacion, para esto se pondra el header "Authorization", en donde las credenciales se codifican en Base64, en la llamada HTTP.
 ```java
 
 String authString = Base64.getEncoder()
@@ -166,9 +166,9 @@ String authString = Base64.getEncoder()
 
 ## StringRequest
 
-### La clase StringRequest de Volley especifica el metodo que vamos a realizar, la URL que vamos a consultar y recibe un string sin procesar como respuesta.
+ La clase StringRequest de Volley especifica el metodo que vamos a realizar, la URL que vamos a consultar y recibe un string sin procesar como respuesta.
 
-### Para procesar la respuesta, Volley nos brinda dos interfaces, la interfaz `Response.Listener` la cual nos devuelve un metodo para ejecutar en caso de una respuesta correcta ( `onResponse(String response)` ), y  la interfaz `Response.ErrorListener` que nos devuelve un metodo para ejecutar en caso de una respuesta incorrecta.( `onErrorResponse(VolleyError error)` ):
+ Para procesar la respuesta, Volley nos brinda dos interfaces, la interfaz `Response.Listener` la cual nos devuelve un metodo para ejecutar en caso de una respuesta correcta ( `onResponse(String response)` ), y  la interfaz `Response.ErrorListener` que nos devuelve un metodo para ejecutar en caso de una respuesta incorrecta.( `onErrorResponse(VolleyError error)` ):
 
 ```java
 
@@ -188,7 +188,7 @@ StringRequest postRequest = new StringRequest(Request.Method.GET, url, new Respo
 
 ```
 
-### En este caso como necesitamos la autorizacion crearemos el metodo `getHeaders()` el cual va a armar el header Authorization con las credenciales codificadas en Base64, las cuales codificamos anteriormente: 
+ En este caso como necesitamos la autorizacion crearemos el metodo `getHeaders()` el cual va a armar el header Authorization con las credenciales codificadas en Base64, las cuales codificamos anteriormente: 
 
 ```java
  StringRequest postRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -211,10 +211,46 @@ StringRequest postRequest = new StringRequest(Request.Method.GET, url, new Respo
         };
 ```
 
-### Por ultimo para poder enviar la peticion travez del metodo `newRequestQueue` indicaremos el contexto y a travez del metodo `add` la peticion que creamos anteriormente
+ Por ultimo para poder enviar la peticion travez del metodo `newRequestQueue` indicaremos el contexto y a travez del metodo `add` la peticion que creamos anteriormente
 
 ```java
 Volley.newRequestQueue(this).add(postRequest);
 ```
+
+## Mantener escaner en posición portrair al ejecutarlo (pantalla en vertical)
+Por defecto el escaner al abrirse lo hace en landscape (pantalla en horizontal), si deseamos evitar que el usuario tenga que rotar el teléfono al utilizar el mismo debemos realizar algunas configuraciones que veremos a continuación.
+
+### Creación de la clase CaptureActivityPortrait
+Clase que extiende de `CaptureActivity` y vamos a utilizar para setear las configuraciones en el método que se ejecute el escaner. 
+
+La clase quedaría así:
+
+```java
+import com.journeyapps.barcodescanner.CaptureActivity;
+
+public class CaptureActivityPortrait extends CaptureActivity {
+}
+```
+*Se le puede asignar el nombre que uno desee.*
+
+### Setear los atributos necesarios
+Dentro del `IntentIntegrator` que creamos para configurar el escaner es necesario añadir dos líneas de código.
+
+```java
+integrator.setCaptureActivity(CaptureActivityPortrait.class);
+integrator.setBarcodeImageEnabled(true);
+```
+
+### Cambiar las configuraciones del AndroidManifest.xml
+Dentro del archivo referido tenemos que agregar una actividad que contiene las configuraciones necesarias para que la aplicación deje por defecto el escaner en posición vertical.
+```java
+<activity android:name=".CaptureActivityPortrait"
+    android:screenOrientation="portrait"
+    android:stateNotNeeded="true"
+    android:theme="@style/zxing_CaptureTheme"
+    android:windowSoftInputMode="stateAlwaysHidden">
+</activity>
+```
+
 
 
